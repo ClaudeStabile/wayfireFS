@@ -5,6 +5,8 @@ ninja-build
 pkg-config
 git
 gettext
+gobject-introspection
+libgirepository1.0-dev
 libpam0g-dev
 libaudit-dev
 libwayland-dev
