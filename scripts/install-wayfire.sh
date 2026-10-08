@@ -1,8 +1,8 @@
-#!/bin/bash
 #!/usr/bin/env bash
 set -e
 
 BUILD_DIR="$HOME/src/wayfire-build"
+CONFIG_REPO="https://github.com/ClaudeStabile/wayfireFS.git"
 PKG_FILE="packages_to_compile_wayfire.list"
 LOG_FILE="/var/log/wayfire_installed_files.txt"
 
@@ -16,7 +16,6 @@ if [ ! -f "$PKG_FILE" ]; then
 fi
 
 sudo apt update
-# Read non-empty, non-comment lines from packages list
 APT_PKGS=$(grep -vE '^\s*#|^\s*$' "$PKG_FILE" | tr '\n' ' ')
 sudo apt install -y $APT_PKGS
 
@@ -33,7 +32,6 @@ REPOS=(
     "https://github.com/WayfireWM/wayfire-plugins-extra.git"
 )
 
-# Clear or initialize manifest log
 sudo touch "$LOG_FILE"
 
 echo "=========================================="
@@ -55,7 +53,6 @@ for repo in "${REPOS[@]}"; do
         git pull origin master --recurse-submodules
     fi
 
-    # Configure build
     if [ -d "build" ]; then
         meson setup build --reconfigure --prefix=/usr/local --buildtype=release
     else
@@ -63,15 +60,35 @@ for repo in "${REPOS[@]}"; do
     fi
 
     ninja -C build
-
-    # Record files installed by ninja
     sudo ninja -C build install | grep -E 'Installing|Replacing' | awk '{print $2}' | sudo tee -a "$LOG_FILE"
     
     sudo ldconfig
 done
 
 echo "=========================================="
-echo " 4. Creating Wayland Desktop Session"
+echo " 4. Fetching & Deploying GitHub Configs"
+echo "=========================================="
+
+cd "$BUILD_DIR"
+if [ -d "wayfireFS" ]; then
+    rm -rf wayfireFS
+fi
+
+git clone "$CONFIG_REPO"
+
+echo "Deploying configuration files to ~/.config/ ..."
+mkdir -p "$HOME/.config"
+
+if [ -d "$BUILD_DIR/wayfireFS/config" ]; then
+    # Copy all .ini, .css, and subfolders from the repo's config/ directory to ~/.config/
+    cp -r "$BUILD_DIR/wayfireFS/config/"* "$HOME/.config/"
+    echo "Successfully deployed configuration files from wayfireFS/config!"
+else
+    echo "Warning: 'config' directory not found in the cloned repository."
+fi
+
+echo "=========================================="
+echo " 5. Creating Wayland Desktop Session"
 echo "=========================================="
 
 sudo mkdir -p /usr/share/wayland-sessions
@@ -87,6 +104,6 @@ EOF
 echo "/usr/share/wayland-sessions/wayfire.desktop" | sudo tee -a "$LOG_FILE"
 
 echo "=========================================="
-echo " Wayfire Stack Successfully Installed!"
+echo " Wayfire Stack and Configs Deployed!"
 echo " Logged installed files to: $LOG_FILE"
 echo "=========================================="
