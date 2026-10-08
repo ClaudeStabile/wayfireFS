@@ -111,7 +111,7 @@ Name=Wayfire
 Comment=Wayfire Compositor (Compiled from Source)
 Exec=/usr/local/bin/wayfire
 Type=Application
-DesktopNames=Ubuntu;Wayfire;GNOME;
+DesktopNames=Wayfire;GNOME;
 X-GDM-BypassX11=true
 EOF
 
