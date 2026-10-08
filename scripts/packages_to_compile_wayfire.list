@@ -1,5 +1,3 @@
-sudo
-sudo
 build-essential
 cmake
 meson
@@ -8,7 +6,7 @@ pkg-config
 git
 libwayland-dev
 wayland-protocols
-libwlroots-0.18-dev
+libwlroots-dev
 libxkbcommon-dev
 libpixman-1-dev
 libcairo2-dev
@@ -26,5 +24,9 @@ libsystemd-dev
 libpipewire-0.3-dev
 libwireplumber-0.5-dev
 libddcutil-dev
-gtk4-dev
-gtkmm-4.0-dev
+libgtk-4-dev
+libgtkmm-4.0-dev
+grim
+slurp
+brightnessctl
+wl-clipboard
