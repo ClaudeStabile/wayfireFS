@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PKG_FILE="${SCRIPT_DIR}/packages_to_compile_wayfire.list"
+
 BUILD_DIR="$HOME/src/wayfire-build"
-PKG_FILE="packages_to_compile_wayfire.list"
 LOG_FILE="/var/log/wayfire_installed_files.txt"
 
 echo "=========================================="
@@ -19,7 +21,7 @@ if [ -f "$LOG_FILE" ]; then
     done < "$LOG_FILE"
     sudo rm -f "$LOG_FILE"
 else
-    echo "Manifest file not found. Fallback to manually cleaning Wayfire files..."
+    echo "Manifest file not found. Fallback to cleaning Wayfire files..."
     sudo rm -f /usr/local/bin/wayfire
     sudo rm -f /usr/local/bin/wf-dock
     sudo rm -f /usr/local/bin/wf-panel
@@ -42,11 +44,11 @@ if [ -f "$PKG_FILE" ]; then
     sudo apt purge -y $APT_PKGS
     sudo apt autoremove --purge -y
 else
-    echo "Warning: $PKG_FILE not found. Skipping package purge."
+    echo "Warning: $PKG_FILE not found at $PKG_FILE. Skipping package purge."
 fi
 
 echo "=========================================="
-echo " 3. Cleaning Up Local Build & Config Files"
+echo " 3. Cleaning Up Local Build & Workspace"
 echo "=========================================="
 
 if [ -d "$BUILD_DIR" ]; then
@@ -54,7 +56,6 @@ if [ -d "$BUILD_DIR" ]; then
     rm -rf "$BUILD_DIR"
 fi
 
-# Optional backup/removal of Wayfire user configs
 if [ -f "$HOME/.config/wayfire.ini" ] || [ -f "$HOME/.config/wf-shell.ini" ]; then
     echo "Backing up user config files to ~/.config_wayfire_backup..."
     mkdir -p "$HOME/.config_wayfire_backup"

@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
+# Detect script directory to find packages_to_compile_wayfire.list locally
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PKG_FILE="${SCRIPT_DIR}/packages_to_compile_wayfire.list"
+
 BUILD_DIR="$HOME/src/wayfire-build"
 CONFIG_REPO="https://github.com/ClaudeStabile/wayfireFS.git"
-PKG_FILE="packages_to_compile_wayfire.list"
 LOG_FILE="/var/log/wayfire_installed_files.txt"
 
 echo "=========================================="
@@ -11,7 +14,7 @@ echo " 1. Installing APT Dependencies"
 echo "=========================================="
 
 if [ ! -f "$PKG_FILE" ]; then
-    echo "Error: $PKG_FILE not found in current directory!"
+    echo "Error: $PKG_FILE not found at $PKG_FILE!"
     exit 1
 fi
 
@@ -80,11 +83,10 @@ echo "Deploying configuration files to ~/.config/ ..."
 mkdir -p "$HOME/.config"
 
 if [ -d "$BUILD_DIR/wayfireFS/config" ]; then
-    # Copy all .ini, .css, and subfolders from the repo's config/ directory to ~/.config/
     cp -r "$BUILD_DIR/wayfireFS/config/"* "$HOME/.config/"
     echo "Successfully deployed configuration files from wayfireFS/config!"
 else
-    echo "Warning: 'config' directory not found in the cloned repository."
+    echo "Warning: 'config' directory not found in cloned repo."
 fi
 
 echo "=========================================="
