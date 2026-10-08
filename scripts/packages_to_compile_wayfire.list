@@ -5,6 +5,7 @@ ninja-build
 pkg-config
 git
 gettext
+valac
 gobject-introspection
 libgirepository1.0-dev
 libpam0g-dev
