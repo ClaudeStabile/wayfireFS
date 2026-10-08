@@ -4,6 +4,7 @@ meson
 ninja-build
 pkg-config
 git
+gettext
 libwayland-dev
 wayland-protocols
 libwlroots-0.19-dev
