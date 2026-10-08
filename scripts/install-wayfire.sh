@@ -90,11 +90,13 @@ else
 fi
 
 echo "=========================================="
-echo " 5. Creating Wayland Desktop Session"
+echo " 5. Creating & Registering Wayland Desktop Session"
 echo "=========================================="
 
+SESSION_FILE="/usr/share/wayland-sessions/wayfire.desktop"
+
 sudo mkdir -p /usr/share/wayland-sessions
-sudo tee /usr/share/wayland-sessions/wayfire.desktop > /dev/null << 'EOF'
+sudo tee "$SESSION_FILE" > /dev/null << 'EOF'
 [Desktop Entry]
 Name=Wayfire
 Comment=Wayfire Compositor (Compiled from Source)
@@ -103,7 +105,13 @@ Type=Application
 DesktopNames=Wayfire;
 EOF
 
-echo "/usr/share/wayland-sessions/wayfire.desktop" | sudo tee -a "$LOG_FILE"
+# Ensure appropriate read permissions for Display Manager (GDM/SDDM)
+sudo chmod 644 "$SESSION_FILE"
+
+# Log session file to manifest if not already present
+if ! grep -q "$SESSION_FILE" "$LOG_FILE"; then
+    echo "$SESSION_FILE" | sudo tee -a "$LOG_FILE"
+fi
 
 echo "=========================================="
 echo " Wayfire Stack and Configs Deployed!"

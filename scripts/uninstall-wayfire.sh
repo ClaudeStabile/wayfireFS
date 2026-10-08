@@ -6,13 +6,14 @@ PKG_FILE="${SCRIPT_DIR}/packages_to_compile_wayfire.list"
 
 BUILD_DIR="$HOME/src/wayfire-build"
 LOG_FILE="/var/log/wayfire_installed_files.txt"
+SESSION_FILE="/usr/share/wayland-sessions/wayfire.desktop"
 
 echo "=========================================="
 echo " 1. Removing Installed Wayfire System Files"
 echo "=========================================="
 
 if [ -f "$LOG_FILE" ]; then
-    echo "Removing compiled binaries and libraries tracked in $LOG_FILE..."
+    echo "Removing compiled binaries, libraries, and session files tracked in $LOG_FILE..."
     while IFS= read -r file; do
         if [ -f "$file" ] || [ -L "$file" ]; then
             sudo rm -f "$file"
@@ -20,17 +21,22 @@ if [ -f "$LOG_FILE" ]; then
         fi
     done < "$LOG_FILE"
     sudo rm -f "$LOG_FILE"
-else
-    echo "Manifest file not found. Fallback to cleaning Wayfire files..."
-    sudo rm -f /usr/local/bin/wayfire
-    sudo rm -f /usr/local/bin/wf-dock
-    sudo rm -f /usr/local/bin/wf-panel
-    sudo rm -f /usr/local/bin/wf-background
-    sudo rm -rf /usr/local/lib/*/libwf-config*
-    sudo rm -rf /usr/local/lib/*/wayfire/
-    sudo rm -rf /usr/local/include/wayfire/
-    sudo rm -f /usr/share/wayland-sessions/wayfire.desktop
 fi
+
+# Explicit fallback cleanup for session files and binaries
+if [ -f "$SESSION_FILE" ]; then
+    echo "Removing Wayland session file: $SESSION_FILE"
+    sudo rm -f "$SESSION_FILE"
+fi
+
+echo "Cleaning up Wayfire executables and shared components..."
+sudo rm -f /usr/local/bin/wayfire
+sudo rm -f /usr/local/bin/wf-dock
+sudo rm -f /usr/local/bin/wf-panel
+sudo rm -f /usr/local/bin/wf-background
+sudo rm -rf /usr/local/lib/*/libwf-config*
+sudo rm -rf /usr/local/lib/*/wayfire/
+sudo rm -rf /usr/local/include/wayfire/
 
 sudo ldconfig
 
@@ -65,4 +71,5 @@ fi
 
 echo "=========================================="
 echo " System rollback complete!"
+echo " Wayfire desktop session option removed."
 echo "=========================================="
