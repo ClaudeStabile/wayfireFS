@@ -54,7 +54,7 @@ else
 fi
 
 echo "=========================================="
-echo " 3. Cleaning Up Local Build & Workspace"
+echo " 3. Cleaning Up Local Build, Assets & Workspace"
 echo "=========================================="
 
 if [ -d "$BUILD_DIR" ]; then
@@ -62,6 +62,13 @@ if [ -d "$BUILD_DIR" ]; then
     rm -rf "$BUILD_DIR"
 fi
 
+# Clean up deployed LookAndFeel_2.0 folder from home directory
+if [ -d "$HOME/LookAndFeel_2.0" ]; then
+    echo "Removing deployed assets folder: $HOME/LookAndFeel_2.0..."
+    rm -rf "$HOME/LookAndFeel_2.0"
+fi
+
+# Backup user config files
 if [ -f "$HOME/.config/wayfire.ini" ] || [ -f "$HOME/.config/wf-shell.ini" ]; then
     echo "Backing up user config files to ~/.config_wayfire_backup..."
     mkdir -p "$HOME/.config_wayfire_backup"

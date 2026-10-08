@@ -69,7 +69,7 @@ for repo in "${REPOS[@]}"; do
 done
 
 echo "=========================================="
-echo " 4. Fetching & Deploying GitHub Configs"
+echo " 4. Fetching & Deploying GitHub Configs & Assets"
 echo "=========================================="
 
 cd "$BUILD_DIR"
@@ -89,6 +89,15 @@ else
     echo "Warning: 'config' directory not found in cloned repo."
 fi
 
+# Deploy LookAndFeel_2.0 directly to the user home directory
+if [ -d "$BUILD_DIR/wayfireFS/LookAndFeel_2.0" ]; then
+    echo "Deploying LookAndFeel_2.0 folder to $HOME/LookAndFeel_2.0 ..."
+    cp -r "$BUILD_DIR/wayfireFS/LookAndFeel_2.0" "$HOME/"
+    echo "Successfully deployed LookAndFeel_2.0 to $HOME/LookAndFeel_2.0!"
+else
+    echo "Warning: 'LookAndFeel_2.0' directory not found in cloned repo."
+fi
+
 echo "=========================================="
 echo " 5. Creating & Registering Wayland Desktop Session"
 echo "=========================================="
@@ -102,7 +111,8 @@ Name=Wayfire
 Comment=Wayfire Compositor (Compiled from Source)
 Exec=/usr/local/bin/wayfire
 Type=Application
-DesktopNames=Wayfire;
+DesktopNames=Wayfire;GNOME;
+X-GDM-BypassX11=true
 EOF
 
 # Ensure appropriate read permissions for Display Manager (GDM/SDDM)
@@ -114,6 +124,6 @@ if ! grep -q "$SESSION_FILE" "$LOG_FILE"; then
 fi
 
 echo "=========================================="
-echo " Wayfire Stack and Configs Deployed!"
+echo " Wayfire Stack, Configs & Assets Deployed!"
 echo " Logged installed files to: $LOG_FILE"
 echo "=========================================="
