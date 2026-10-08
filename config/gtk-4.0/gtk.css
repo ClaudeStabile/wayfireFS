@@ -1,0 +1,10 @@
+@import 'colors.css';
+/* Targets the wf-panel directly */
+.wf-panel, .wf-panel * {
+    font-size: 9pt; /* Adjust size as desired (e.g., 9pt, 10pt, 11pt) */
+}
+
+/* Specifically target menu dropdowns / launcher menus */
+.wf-menu, .wf-menu * {
+    font-size: 9pt;
+}
