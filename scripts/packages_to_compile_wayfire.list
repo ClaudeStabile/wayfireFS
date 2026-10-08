@@ -43,3 +43,5 @@ libyyjson-dev
 doxygen
 libpulse-dev
 libxkbregistry-dev
+libssl-dev
+libasound2-dev
