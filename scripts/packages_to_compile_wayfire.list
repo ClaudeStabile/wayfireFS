@@ -45,3 +45,4 @@ libpulse-dev
 libxkbregistry-dev
 libssl-dev
 libasound2-dev
+libboost-dev
