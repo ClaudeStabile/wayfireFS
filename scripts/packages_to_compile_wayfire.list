@@ -5,6 +5,7 @@ ninja-build
 pkg-config
 git
 gettext
+libpam0g-dev
 libwayland-dev
 wayland-protocols
 libwlroots-0.19-dev
