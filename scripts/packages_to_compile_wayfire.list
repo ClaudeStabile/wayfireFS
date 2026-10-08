@@ -6,7 +6,7 @@ pkg-config
 git
 libwayland-dev
 wayland-protocols
-libwlroots-dev
+libwlroots-0.19-dev
 libxkbcommon-dev
 libpixman-1-dev
 libcairo2-dev
