@@ -38,3 +38,8 @@ grim
 slurp
 brightnessctl
 wl-clipboard
+doctest-dev
+libyyjson-dev
+doxygen
+libpulse-dev
+libxkbregistry-dev
