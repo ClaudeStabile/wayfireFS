@@ -6,6 +6,7 @@ pkg-config
 git
 gettext
 libpam0g-dev
+libaudit-dev
 libwayland-dev
 wayland-protocols
 libwlroots-0.19-dev
