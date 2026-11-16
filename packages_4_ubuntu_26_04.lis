@@ -230,4 +230,5 @@ xfsprogs
 xterm
 xutils-dev
 xwayland
+wayland-utils
 yt-dlp
